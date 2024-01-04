@@ -1,19 +1,21 @@
-# player.py
+#player.py
 import pygame
 from settings import screen_width, screen_height
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("player.png")  # Lade das Spieler-Icon
-        self.image = pygame.transform.scale(self.image, (100, 100))  # Verkleinere das Icon
+        self.base_image = pygame.image.load("player.png")  # Load the player icon
+        self.base_image = pygame.transform.scale(self.base_image, (100, 100))  # Resize the icon
+        self.image = self.base_image.copy()
         self.rect = self.image.get_rect()
         self.rect.center = (screen_width // 2, screen_height // 2)
         self.speed = 1
-        self.size = 500
-        self.magnet_field = 50090
-        self.coins_multi = 1
+        self.size = 50  # Adjusted initial size
+        self.magnet_field = 5000  # Adjusted initial magnet field
+        self.coins_multi = 0
         self.coins = 0
+        self.coins_collected = 0
         self.upgrades = []
 
     def update(self):
@@ -32,13 +34,22 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = max(0, min(self.rect.x, screen_width - self.rect.width))
         self.rect.y = max(0, min(self.rect.y, screen_height - self.rect.height))
 
-    def apply_upgrade(self, player):
-        if self.type == "size":
-            player.size += 5
-        elif self.type == "magnet":
-            player.magnet_field += 1
-        elif self.type == "multiplier":
-            player.coins_multi += 1
+    def apply_upgrade(self, upgrade_type):
+        if upgrade_type == "size":
+            # Decrease size by 2% when the upgrade expires
+            self.size = int(self.size * 0.98)
+            self.image = pygame.transform.scale(self.base_image, (2 * self.size, 2 * self.size))
+        elif upgrade_type == "magnet":
+            self.magnet_field += 1
+        elif upgrade_type == "multiplier":
+            self.coins_multi += 1
 
     def get_position(self):
-        return self.rect.x, self.rect.y            
+        return self.rect.x, self.rect.y
+
+    def draw_hitbox(self, screen):
+        pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)
+
+    def collect_coin(self, amount):
+        self.coins_collected += amount
+        self.coins += amount     

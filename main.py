@@ -37,6 +37,7 @@ font = pygame.font.Font(None, 36)
 running = True
 show_fps = False
 show_coords = False
+show_hitbox = False
 fullscreen = False
 
 buy_upgrade_button_rect = pygame.Rect(10, screen_height - 50, 150, 40)
@@ -58,6 +59,7 @@ while running:
             elif event.key == pygame.K_f:
                 show_fps = not show_fps
                 show_coords = not show_coords
+                show_hitbox = not show_hitbox
             elif event.key == pygame.K_s:
                 settings_menu()
                 pygame.mixer.Sound.set_volume(coin_sound, volume)
@@ -147,6 +149,9 @@ while running:
             screen.blit(upgrade_display_text, (screen_width // 2 - 100, screen_height // 2))
         else:
             current_upgrade_display_start_time = 0
+
+    if show_hitbox:
+        player.draw_hitbox(screen)
 
     pygame.display.flip()
     clock.tick(fps_limit)

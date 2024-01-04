@@ -1,8 +1,8 @@
 # settings.py
 
 # Bildschirmgröße
-screen_width = 800
-screen_height = 600
+screen_width = 1920
+screen_height = 1080
 
 # FPS-Limit
 fps_limit = 1000
