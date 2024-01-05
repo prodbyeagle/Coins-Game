@@ -10,9 +10,9 @@ class Player(pygame.sprite.Sprite):
         self.image = self.base_image.copy()
         self.rect = self.image.get_rect()
         self.rect.center = (screen_width // 2, screen_height // 2)
-        self.speed = 1
+        self.speed = 10
         self.size = 50  # Adjusted initial size
-        self.magnet_field = 5000  # Adjusted initial magnet field
+        self.magnet_field = 50 # Adjusted initial magnet field
         self.coins_multi = 0
         self.coins = 0
         self.coins_collected = 0
@@ -36,11 +36,12 @@ class Player(pygame.sprite.Sprite):
 
     def apply_upgrade(self, upgrade_type):
         if upgrade_type == "size":
-            # Decrease size by 2% when the upgrade expires
             self.size = int(self.size * 0.98)
             self.image = pygame.transform.scale(self.base_image, (2 * self.size, 2 * self.size))
         elif upgrade_type == "magnet":
             self.magnet_field += 1
+            # Vergrößere die Hitbox entsprechend des Magnetfelds
+            self.rect.inflate_ip(self.magnet_field, self.magnet_field)
         elif upgrade_type == "multiplier":
             self.coins_multi += 1
 

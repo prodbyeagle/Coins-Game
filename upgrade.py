@@ -1,4 +1,5 @@
 # upgrade.py
+
 import pygame
 import time
 from settings import screen_width, screen_height
@@ -7,9 +8,9 @@ class Upgrade(pygame.sprite.Sprite):
     image = pygame.image.load("upgrade_icon.png")
     image = pygame.transform.scale(image, (90, 90))
 
-    def __init__(self, name, upgrade_type, duration):
+    def __init__(self, name, upgrade_type, duration=5000):  # Füge einen Standardwert für die Dauer hinzu
         super().__init__()
-        self.image = Upgrade.image.copy()  # Use a copy to avoid shared references
+        self.image = Upgrade.image.copy()
         self.rect = self.image.get_rect()
         self.rect.x = 0
         self.rect.y = 0
@@ -28,20 +29,18 @@ class Upgrade(pygame.sprite.Sprite):
         else:
             print(f"Warning: Unknown upgrade type '{self.type}'. Upgrade not applied.")
 
-        # Check if the player already has an active booster of the same type
         existing_booster = next((upgrade for upgrade in player.upgrades if upgrade.type == self.type), None)
 
-        # If an existing booster is found, reset its timer
         if existing_booster:
             existing_booster.reset_timer()
         else:
-            # If no existing booster, set the start time for the new booster
             self.start_time = time.time()
 
+        # Hier könnte eine Anzeige für den Spieler erfolgen (Punkt 1)
+        print(f"Upgrade collected: {self.name}, Duration: {self.duration / 1000} seconds")
+
     def has_expired(self):
-        # Check if the duration has passed since the upgrade was applied
         return time.time() > self.start_time + self.duration
 
     def reset_timer(self):
-        # Reset the start time to the current time
         self.start_time = time.time()

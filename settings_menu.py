@@ -38,10 +38,6 @@ def settings_menu():
 
         screen.fill((255, 255, 255))
 
-        # Hier könntest du verschiedene Einstellungsoptionen darstellen
-        # und die Werte ändern, wenn der Benutzer auf sie klickt.
-
-        # Beispiel: Lautstärke ändern
         pygame.draw.rect(screen, (255, 0, 0), (50, 50, 300, 30))
         volume_text = button_font.render(f"Lautstärke: {int(volume * 100)}%", True, (0, 0, 0))
         screen.blit(volume_text, (50, 50))
@@ -59,13 +55,12 @@ def settings_menu():
         pygame.display.flip()
         clock.tick(fps_limit)
 
-        # Verarbeite Benutzereingaben hier
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 # Überprüfe, ob der Mausklick auf den Zurück zum Spiel-Button liegt
                 if 50 <= mouse_pos[0] <= 250 and 150 <= mouse_pos[1] <= 180:
-                    running = False  # Schließe das Einstellungsmenü
+                    running = False
 
     pygame.quit()
     sys.exit()
